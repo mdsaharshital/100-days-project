@@ -13,24 +13,27 @@ function main() {
   changeBtn.addEventListener("click", function () {
     const bgColor = generateHEXcolor();
     root.style.backgroundColor = bgColor;
-    outPut.value = bgColor;
+    outPut.value = bgColor.substring(1);
   });
   copyBtn.addEventListener("click", function () {
     if (isValidColor(outPut.value)) {
-      navigator.clipboard.writeText(outPut.value);
+      navigator.clipboard.writeText(`#${outPut.value}`);
       if (div != null) {
         div.remove();
         div = null;
       }
-      generateToastMsg(`${outPut.value} Copied`);
+      generateToastMsg(`#${outPut.value} Copied`);
     } else {
       generateToastMsg(`Invalid color code`);
     }
   });
   outPut.addEventListener("keyup", function (e) {
     const color = e.target.value;
-    if (color && isValidColor(color)) {
-      root.style.backgroundColor = color;
+    if (color) {
+      outPut.value = color.toUpperCase();
+      if (isValidColor(color)) {
+        root.style.backgroundColor = `#${color}`;
+      }
     }
   });
 }
@@ -59,12 +62,11 @@ function generateToastMsg(msg) {
 }
 
 const isValidColor = (color) => {
-  if (color.length !== 7) false;
-  if (color[0] !== "#") false;
-  color = color.substring(1);
+  if (color.length !== 6) false;
   return /^[0-9A-Fa-f]{6}$/i.test(color);
 };
 //step -3 collect all necessary items
 
 // step-4 handle clicks
 // day-5 create own hex code and validate it
+// DAY-6 - transform user input right after they press keys
